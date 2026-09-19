@@ -59,7 +59,8 @@ with app.app_context():
                         No_button =  st.button("No" , width = 'stretch')
                     if Yes_button:
                         add_skills(selected_skills)
-                        st.success(f"Skills added : {", ".join(selected_skills)}")
+                        x = ", ".join(selected_skills)
+                        st.success(f"Skills added : {x}")
                         time.sleep(0.75)
                         st.rerun()
                     if No_button:

@@ -19,7 +19,7 @@ def display_message(message : Notification):
             else:
                 st.markdown(f"From : {message.teacher.name} | {message.activity.name }")
             st.markdown(f"{message.title}")
-            st.markdown(f"{message.create_time.strftime("%Y-%m-%d %H:%M:%S")}")
+            st.markdown(str(message.create_time.strftime("%Y-%m-%d %H:%M:%S")))
         with col3:
             with st.container(vertical_alignment="top"):
                 if st.button("View Content", key=message.notification_id):
