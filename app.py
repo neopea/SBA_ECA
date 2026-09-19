@@ -96,5 +96,6 @@ with app.app_context():
 
     else:
         login()
-
+        position = "hidden"
+        pg = st.navigation([login] , position="hidden")
 
