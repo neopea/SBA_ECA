@@ -116,7 +116,7 @@ with app.app_context():
                         else:
                             st.markdown("N/A")
                         st.markdown(f"{message.teacher.name}  ({message.teacher.teacher_id})")
-                        st.markdown(f"{message.create_time.strftime('%Y-%m-%d %H:%M:%S')}")
+                        st.markdown(message.create_time.strftime('%Y-%m-%d %H:%M:%S'))
                         if message.is_read:
                             st.badge("Read", icon=":material/check:", color="green")
                         else:
