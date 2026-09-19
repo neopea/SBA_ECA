@@ -93,7 +93,8 @@ with app.app_context():
 
                 if Yes_button:
                     del_skills(st.session_state.selected)
-                    st.success(f"Skills deleted : {", ".join(st.session_state.selected)}")
+                    x = ", ".join(st.session_state.selected)
+                    st.success(f"Skills deleted : {x}")
                     time.sleep(0.75)
                     st.rerun()
                 if No_button:
