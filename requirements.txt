@@ -1,3 +1,4 @@
+python-3.11
 streamlit==1.38.0
 sqlalchemy==2.0.30
 flask==3.0.3
