@@ -7,7 +7,6 @@ st.session_state.editing = False
 
 
 st.session_state.show_stats = True
-student = db.session.get(Student , st.session_state.ssid)
 
 current_year = datetime.today().year
 new_sku_year = datetime(current_year , 9,  1, 0)
@@ -196,4 +195,5 @@ def student_display():
 
 with app.app_context():
     if __name__ == "__main__":
+        student = db.session.get(Student , st.session_state.ssid)
         student_display()

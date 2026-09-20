@@ -3,6 +3,7 @@ import pandas as pd
 from sqlalchemy.orm import selectinload
 from database import app, db, Student, Activity, StudentActivity, Award, Attendance, Teacher , TeacherHighlight
 import time
+from page.Student_display import current_year
 st.set_page_config(layout="wide")
 def display_student(student : Student):
     with st.container(border= True):
@@ -26,35 +27,33 @@ def display_act(acts):
     with st.container(horizontal=True , vertical_alignment="center"):
         check = st.checkbox(label="activity" , label_visibility="collapsed" , key=f"{acts.activity_id}checkbox")
         st.markdown(f'<p style="font-size:24px;">{acts.name}</p>', unsafe_allow_html=True)
+    with st.container(border=True):
+        teachers = [x.name for x in acts.teachers_in_charge]
+        captain = ''
+        for enroll in acts.enrollments:
+            if (enroll.activity_id == acts.activity_id
+                and enroll.position_tier == "Leader"
+                and int(enroll.academic_year[:4]) == current_year):
+                captain += enroll.student.class_form + ' ' + enroll.student.name + " | "
 
-    with st.container(border=True , horizontal=True):
-        with st.container(width= 250):
-            st.write("Categories: ")
-            st.write("Responsive Teachers:")
-            st.write("Captain: ")
-            st.write("Description: ")
-            view_detail = st.button("View details" , key=acts.activity_id)
+        captain_display = captain if captain else "--no captain--"
+
+        st.markdown(f"""
+                | Field | Value |
+                |---|---|
+                | Category | {acts.category} |
+                | Responsive Teachers | {', '.join(teachers)} |
+                | Captain | {captain_display} |
+                | Description | {acts.description} |
+                """)
+        view_detail = st.button("View details" , key=acts.activity_id)
 
 
-        with st.container():
-            st.write(acts.category)
-            teachers = [x.name for x in acts.teachers_in_charge]
-            st.write(' , '.join(teachers))
-            captain = []
-            for enroll in acts.enrollments:
-                if enroll.activity_id == acts.activity_id and enroll.position_tier == "Leader":
-                    captain.append(enroll.student.class_form + ' ' + enroll.student.name)
-            
-            if captain == '':
-                st.write("--no captain--")
-            else:
-                st.write(" , ".join(captain))
+    
 
-            st.write(acts.description)
-
-        if view_detail:
-            st.session_state.activity_id = acts.activity_id
-            st.switch_page("page/Teacher_activityinfo.py")
+    if view_detail:
+        st.session_state.activity_id = acts.activity_id
+        st.switch_page("page/Teacher_activityinfo.py")
 
     return check
     
