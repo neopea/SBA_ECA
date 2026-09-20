@@ -6,7 +6,7 @@ st.set_page_config(layout="wide")
 def get_attendance(student:Student):
     counter = 0
     if len(student.attendance_records) == 0:
-        return "N/A"
+        return 0.0
     for i in student.attendance_records:
         if i.status == "Present":
             counter += 1
