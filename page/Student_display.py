@@ -195,4 +195,5 @@ def student_display():
 
 
 with app.app_context():
-    student_display()
+    if __name__ == "__main__":
+        student_display()

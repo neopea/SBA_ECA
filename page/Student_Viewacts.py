@@ -27,32 +27,30 @@ def enroll_student(student_ssid, activity_id, activity_name ,academic_year):
 
 def display_act(acts: Activity):
     st.markdown(f'<p style="font-size:24px;">{acts.name}</p>', unsafe_allow_html=True)
-    with st.container(border=True , horizontal=True):
-        with st.container(width= 250):
-            st.write("Categories: ")
-            st.write("Responsive Teachers:")
-            st.write("Captain: ")
-            st.write("Description: ")
-            join_button =  st.button("Join Now" , key=acts.activity_id)
+    with st.container(border=True):
+        teachers = [x.name for x in acts.teachers_in_charge]
+        captain = ''
+        for enroll in acts.enrollments:
+            if (enroll.activity_id == acts.activity_id
+                and enroll.position_tier == "Leader"
+                and int(enroll.academic_year[:4]) == current_year):
+                captain += enroll.student.class_form + ' ' + enroll.student.name + " | "
 
+        captain_display = captain if captain else "--no captain--"
 
+        st.markdown(f"""
+                | Field | Value |
+                |---|---|
+                | Category | {acts.category} |
+                | Responsive Teachers | {', '.join(teachers)} |
+                | Captain | {captain_display} |
+                | Description | {acts.description} |
+                """)
 
-        with st.container():
-            st.write(acts.category)
-            teachers = [x.name for x in acts.teachers_in_charge]
-            st.write(' , '.join(teachers))
-            captain = ''
-            for enroll in acts.enrollments:
-                if enroll.activity_id == acts.activity_id and enroll.position_tier == "Leader" and int(enroll.academic_year[:4]) == current_year:
-                    captain += enroll.student.class_form + ' ' +  enroll.student.name + " | " 
+        join_button = st.button("Join Now", key=acts.activity_id)
+
             
-            if captain == '':
-                st.write("--no captain--")
-            else:
-                st.write(captain)
-            
 
-            st.write(acts.description)
         existing = db.session.execute(db.select(StudentActivity).where(StudentActivity.student_ssid == st.session_state.ssid , StudentActivity.activity_id == acts.activity_id , StudentActivity.academic_year == f"{current_year}-{current_year+1}")).scalars().all()
         if join_button:
             if existing:

@@ -1,34 +1,31 @@
 import streamlit as st
 from database import db , app , Teacher , Activity
+from page.Student_display import current_year
 def display_act(acts):
-    with st.container(horizontal=True , vertical_alignment="center"):
-        st.markdown(f'<p style="font-size:24px;">{acts.name}</p>', unsafe_allow_html=True)
+    st.markdown(f'<p style="font-size:24px;">{acts.name}</p>', unsafe_allow_html=True)
+    with st.container(border=True):
+        teachers = [x.name for x in acts.teachers_in_charge]
+        captain = ''
+        for enroll in acts.enrollments:
+            if (enroll.activity_id == acts.activity_id
+                and enroll.position_tier == "Leader"
+                and int(enroll.academic_year[:4]) == current_year):
+                captain += enroll.student.class_form + ' ' + enroll.student.name + " | "
 
-    with st.container(border=True , horizontal=True):
-        with st.container(width= 250):
-            st.write("Categories: ")
-            st.write("Responsive Teachers:")
-            st.write("Captain: ")
-            st.write("Description: ")
-            view_detail = st.button("View details" , key=acts.activity_id)
+        captain_display = captain if captain else "--no captain--"
 
+        st.markdown(f"""
+                | Field | Value |
+                |---|---|
+                | Category | {acts.category} |
+                | Responsive Teachers | {', '.join(teachers)} |
+                | Captain | {captain_display} |
+                | Description | {acts.description} |
+                """)
 
-        with st.container():
-            st.write(acts.category)
-            teachers = [x.name for x in acts.teachers_in_charge]
-            st.write(' , '.join(teachers))
-            captain = []
-            for enroll in acts.enrollments:
-                if enroll.activity_id == acts.activity_id and enroll.position_tier == "Leader":
-                    captain.append(enroll.student.class_form + ' ' + enroll.student.name)
-            
-            if captain == '':
-                st.write("--no captain--")
-            else:
-                st.write(" , ".join(captain))
+        view_detail = st.button("View details" , key=acts.activity_id)
 
-            st.write(acts.description)
-
+        
         if view_detail:
             st.session_state.activity_id = acts.activity_id
             st.switch_page("page/Teacher_activityinfo.py")
