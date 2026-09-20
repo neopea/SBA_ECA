@@ -3,8 +3,8 @@ from database import Student , Activity , StudentActivity ,app , db , Teacher
 import pandas as pd
 import time
 from sqlalchemy.orm import selectinload 
-from page.Student_display import current_year
-
+from datetime import datetime
+current_year = datetime.today().year
 
 def enroll_student(student_ssid, activity_id, activity_name ,academic_year):
     with app.app_context():

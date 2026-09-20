@@ -1,6 +1,8 @@
 import streamlit as st
 from database import db , app , Teacher , Activity
-from page.Student_display import current_year
+from datetime import datetime
+current_year = datetime.today().year
+
 def display_act(acts):
     st.markdown(f'<p style="font-size:24px;">{acts.name}</p>', unsafe_allow_html=True)
     with st.container(border=True):

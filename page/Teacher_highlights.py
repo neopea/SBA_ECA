@@ -3,7 +3,8 @@ import pandas as pd
 from sqlalchemy.orm import selectinload
 from database import app, db, Student, Activity, StudentActivity, Award, Attendance, Teacher , TeacherHighlight
 import time
-from page.Student_display import current_year
+from datetime import datetime
+current_year = datetime.today().year
 st.set_page_config(layout="wide")
 def display_student(student : Student):
     with st.container(border= True):

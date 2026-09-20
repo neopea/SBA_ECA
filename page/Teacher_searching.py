@@ -2,7 +2,8 @@ import streamlit as st
 from sqlalchemy import or_, desc, asc
 from sqlalchemy.orm import selectinload
 from database import Student, Activity, Attendance , Skill, Teacher, app, db , TeacherHighlight
-from page.Student_display import current_year
+from datetime import datetime
+current_year = datetime.today().year
 if "student_selected" not in st.session_state:
     st.session_state.student_selected = {}
 if "activity_selected" not in st.session_state:    
