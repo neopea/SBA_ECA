@@ -117,8 +117,8 @@ class Activity(db.Model):
     def set_embeddings(self , np_array ):
         self.embeddings = np_array.tobytes()
     def get_embeddings(self):
-        return torch.from_numpy(np.frombuffer(self.embeddings , dtype= np.float32)).reshape(1,384)
-    
+        arr = np.frombuffer(self.embeddings , dtype= np.float32).copy()
+        return torch.from_numpy(arr).reshape(1,384)    
     def __repr__(self):
         return f"<Activity {self.name}>"
 
@@ -156,8 +156,8 @@ class Award(db.Model):
     def set_embeddings(self , np_array ):
         self.embeddings = np_array.tobytes()
     def get_embeddings(self):
-        return torch.from_numpy(np.frombuffer(self.embeddings , dtype= np.float32)).reshape(1,384)
-    
+        arr = np.frombuffer(self.embeddings , dtype= np.float32).copy()
+        return torch.from_numpy(arr).reshape(1,384)    
 class Skill(db.Model):
     __tablename__ = "skills"
     skill_id = mapped_column(db.Integer, primary_key=True, autoincrement=True)
@@ -169,7 +169,8 @@ class Skill(db.Model):
     def set_embeddings(self , np_array ):
         self.embeddings = np_array.tobytes()
     def get_embeddings(self):
-        return torch.from_numpy(np.frombuffer(self.embeddings , dtype= np.float32)).reshape(1,384)
+        arr = np.frombuffer(self.embeddings , dtype= np.float32).copy()
+        return torch.from_numpy(arr).reshape(1,384)
     def __repr__(self):
         return f"<Skill {self.skill_name}>"
 
