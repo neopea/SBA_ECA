@@ -36,8 +36,10 @@ with app.app_context():
     if st.button("Submit"):
         if name == '':
             st.warning("Activity name cannot be empty")
-        elif teachers :
-            print('')
+        elif len(name) > 100:
+            st.warning("Activity name cannot be more than 100 characters")
+        elif teachers == '':
+            st.warning("A teacher must be in charge of the activity")
         else:
             @st.dialog("Confirm submission?")
             def confirm():
@@ -51,7 +53,8 @@ with app.app_context():
                     #try:
                         add_acts(name , cate , description , teachers_in_charge=teachers)
                         st.success(f"new acts {name} added")
-
+                        time.sleep(0.5)
+                        st.rerun()  
                     #except:
                     #    st.warning(f"{acts.name} already joined")
                     #finally:
